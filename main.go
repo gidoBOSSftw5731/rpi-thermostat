@@ -25,6 +25,8 @@ const (
 
 var (
 	relay_line *gpiod.Line
+
+	currentClimateData climateData
 )
 
 type climateData struct {
@@ -40,6 +42,8 @@ func checkTemp() float32 {
 func checkTempAndHumidity() (float32, float32) {
 	temperature, humidity, _, _ :=
 		dht.ReadDHTxxWithRetry(sensor_type, sensor_pin, false, 50)
+	currentClimateData.Temperature = temperature
+	currentClimateData.Humidity = humidity
 
 	return temperature, humidity
 }
@@ -92,19 +96,13 @@ func startWebserver() {
 
 func indexHandler(resp http.ResponseWriter, req *http.Request) {
 	// get temperature and humidity
-	temperature, humidity := checkTempAndHumidity()
-
-	data := climateData{
-		Temperature: temperature,
-		Humidity:    humidity,
-	}
 
 	tmpl, err := template.ParseFiles("index.html")
 	if err != nil {
 		panic(err)
 	}
 
-	err = tmpl.Execute(resp, data)
+	err = tmpl.Execute(resp, currentClimateData)
 	if err != nil {
 		log.Errorln("Templating error: ", err)
 		resp.WriteHeader(http.StatusInternalServerError)
