@@ -1,6 +1,6 @@
 module github.com/gidoBOSSftw5731/rpi-thermostat
 
-go 1.21.4
+go 1.19
 
 require (
 	github.com/d2r2/go-dht v0.0.0-20200119175940-4ba96621a218 // indirect
