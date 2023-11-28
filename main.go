@@ -3,6 +3,9 @@ package main
 import (
 	"html/template"
 	"net/http"
+	"strconv"
+	"strings"
+	"time"
 
 	"github.com/d2r2/go-dht"
 	"github.com/gidoBOSSftw5731/log"
@@ -27,6 +30,10 @@ var (
 	relay_line *gpiod.Line
 
 	currentClimateData climateData
+
+	//relayLockTime is a timestamp of, if the relay is locked, when the lock will be lifted.
+	// locks are manual overrides given by the user.
+	relayLockTime time.Time
 )
 
 type climateData struct {
@@ -65,6 +72,10 @@ func checker() {
 }
 
 func setRelay(state int) {
+	if time.Now().Before(relayLockTime) {
+		log.Traceln("Relay is locked, not setting relay to", state)
+		return
+	}
 	// set gpio pin to state
 	log.Traceln("Setting relay to", state)
 	relay_line.SetValue(state)
@@ -91,6 +102,7 @@ func startWebserver() {
 	// start webserver
 	log.Infoln("Starting webserver on port 8080")
 	http.HandleFunc("/", indexHandler)
+	http.HandleFunc("/lock", lockHandler)
 	http.ListenAndServe("127.0.0.1:8080", nil)
 }
 
@@ -107,4 +119,40 @@ func indexHandler(resp http.ResponseWriter, req *http.Request) {
 		log.Errorln("Templating error: ", err)
 		resp.WriteHeader(http.StatusInternalServerError)
 	}
+}
+
+func lockHandler(resp http.ResponseWriter, req *http.Request) {
+	// split path into parts
+	URLSplit := strings.Split(req.URL.Path, "/")
+
+	// check if the path has both a state and a time
+	if len(URLSplit) != 4 {
+		resp.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	var state int
+	// parse the state
+	switch URLSplit[2] {
+	case "on":
+		state = 1
+	case "off":
+		state = 0
+	default:
+		resp.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	// parse the time in minutes
+	mins, err := strconv.Atoi(URLSplit[3])
+	if err != nil {
+		resp.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	// set the relay
+	setRelay(state)
+	// set the lock time
+	relayLockTime = time.Now().Add(time.Duration(mins) * time.Minute)
+
 }
