@@ -91,7 +91,7 @@ func startWebserver() {
 	// start webserver
 	log.Infoln("Starting webserver on port 8080")
 	http.HandleFunc("/", indexHandler)
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe("127.0.0.1:8080", nil)
 }
 
 func indexHandler(resp http.ResponseWriter, req *http.Request) {
