@@ -55,6 +55,8 @@ func setRelay(state int) {
 }
 
 func main() {
+	log.SetCallDepth(4)
+
 	var err error
 	relay_line, err = gpiod.RequestLine("gpiochip0", relay_pin, gpiod.AsOutput())
 	if err != nil {
