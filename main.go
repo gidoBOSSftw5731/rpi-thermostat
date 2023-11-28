@@ -150,6 +150,8 @@ func lockHandler(resp http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	//set the lock time to 0
+	relayLockTime = time.Time{}
 	// set the relay
 	setRelay(state)
 	// set the lock time
