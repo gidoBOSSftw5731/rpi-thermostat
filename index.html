@@ -4,12 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Room Temperature and Humidity</title>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+        
+        h1 {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        
+        p {
+            text-align: center;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        
+        .temperature {
+            color: #f00;
+        }
+        
+        .humidity {
+            color: #00f;
+        }
+    </style>
 </head>
 <body>
     <h1>Room Temperature and Humidity</h1>
     <p>
-        Current temperature: {{.Temperature}}°C<br>
-        Current humidity: {{.Humidity}}%
+        Current temperature: <span class="temperature">{{.Temperature}}°C</span><br>
+        Current humidity: <span class="humidity">{{.Humidity}}%</span>
     </p>
 </body>
 </html>
