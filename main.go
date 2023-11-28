@@ -1,6 +1,9 @@
 package main
 
 import (
+	"html/template"
+	"net/http"
+
 	"github.com/d2r2/go-dht"
 	"github.com/gidoBOSSftw5731/log"
 	"github.com/warthog618/gpiod"
@@ -24,11 +27,21 @@ var (
 	relay_line *gpiod.Line
 )
 
+type climateData struct {
+	Temperature float32
+	Humidity    float32
+}
+
 func checkTemp() float32 {
-	temperature, _, _, _ :=
+	temperature, _ := checkTempAndHumidity()
+	return temperature
+}
+
+func checkTempAndHumidity() (float32, float32) {
+	temperature, humidity, _, _ :=
 		dht.ReadDHTxxWithRetry(sensor_type, sensor_pin, false, 50)
 
-	return temperature
+	return temperature, humidity
 }
 
 // checker repeatedly checks if the temperature is within the
@@ -36,7 +49,6 @@ func checkTemp() float32 {
 func checker() {
 	for {
 		temperature := checkTemp()
-
 		switch {
 		case temperature < desired_temp-histeresis:
 			// turn on the relay
@@ -66,4 +78,35 @@ func main() {
 
 	go checker()
 
+	// start listening on port 8080 with webserver
+	startWebserver()
+
+}
+
+func startWebserver() {
+	// start webserver
+	log.Infoln("Starting webserver on port 8080")
+	http.HandleFunc("/", indexHandler)
+	http.ListenAndServe(":8080", nil)
+}
+
+func indexHandler(resp http.ResponseWriter, req *http.Request) {
+	// get temperature and humidity
+	temperature, humidity := checkTempAndHumidity()
+
+	data := climateData{
+		Temperature: temperature,
+		Humidity:    humidity,
+	}
+
+	tmpl, err := template.ParseFiles("index.html")
+	if err != nil {
+		panic(err)
+	}
+
+	err = tmpl.Execute(resp, data)
+	if err != nil {
+		log.Errorln("Templating error: ", err)
+		resp.WriteHeader(http.StatusInternalServerError)
+	}
 }
