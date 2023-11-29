@@ -102,7 +102,7 @@ func startWebserver() {
 	// start webserver
 	log.Infoln("Starting webserver on port 8080")
 	http.HandleFunc("/", indexHandler)
-	http.HandleFunc("/lock", lockHandler)
+	http.HandleFunc("/lock/", lockHandler)
 	http.ListenAndServe("127.0.0.1:8080", nil)
 }
 
@@ -151,10 +151,13 @@ func lockHandler(resp http.ResponseWriter, req *http.Request) {
 	}
 
 	//set the lock time to 0
-	relayLockTime = time.Time{}
+	relayLockTime = time.Unix(0, 0)
 	// set the relay
 	setRelay(state)
 	// set the lock time
 	relayLockTime = time.Now().Add(time.Duration(mins) * time.Minute)
+
+	// redirect to the index page
+	http.Redirect(resp, req, "/", http.StatusTemporaryRedirect)
 
 }
