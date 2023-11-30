@@ -103,6 +103,9 @@ func startWebserver() {
 	log.Infoln("Starting webserver on port 8080")
 	http.HandleFunc("/", indexHandler)
 	http.HandleFunc("/lock/", lockHandler)
+	http.HandleFunc("/style.css", func(resp http.ResponseWriter, req *http.Request) {
+		http.ServeFile(resp, req, "style.css")
+	})
 	http.ListenAndServe("127.0.0.1:8080", nil)
 }
 
