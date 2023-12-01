@@ -20,10 +20,10 @@ const (
 	relay_pin = 4
 
 	// desired_temp is the temperature we want to maintain (assuming heating)
-	desired_temp = 18
+	desired_temp = 19
 
 	// histeresis is the range of temperature we allow, so the range is +- histeresis
-	histeresis = 1
+	histeresis = 0
 )
 
 var (
