@@ -23,7 +23,7 @@ const (
 	desired_temp = 19
 
 	// histeresis is the range of temperature we allow, so the range is +- histeresis
-	histeresis = 0
+	histeresis = 1
 )
 
 var (
@@ -61,7 +61,7 @@ func checker() {
 	for {
 		temperature := checkTemp()
 		switch {
-		case temperature < desired_temp-histeresis:
+		case temperature <= desired_temp-histeresis:
 			// turn on the relay
 			setRelay(1)
 		case temperature > desired_temp+histeresis:
