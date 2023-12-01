@@ -1,43 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Room Temperature and Humidity</title>
-    <style>
-        body {
-            font-family: sans-serif;
-        }
-        
-        h1 {
-            text-align: center;
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-        
-        p {
-            text-align: center;
-            font-size: 18px;
-            margin-bottom: 10px;
-        }
-        
-        .temperature {
-            color: #f00;
-        }
-        
-        .humidity {
-            color: #00f;
-        }
-    </style>
-</head>
-<body>
-    <h1>Room Temperature and Humidity</h1>
-    <p>
-        Current temperature: <span class="temperature">{{.Temperature}}°C</span><br>
-        Current humidity: <span class="humidity">{{.Humidity}}%</span>
-    </p>
-    <!--Buttons to trigger heat lock on/off for 30 mins-->
-    <button type="button" onclick="window.location.href='/lock/on/30'">30 Minute Heat Lock On</button>
-    <button type="button" onclick="window.location.href='/lock/off/30'">30 Minute Heat Lock Off</button>
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Room Temperature and Humidity</title>
+        <link rel="stylesheet" , href="style.css">
+    </head>
+    <body>
+        <div id = display>
+            <h1 style="text-align: center;">Room Temperature and Humidity</h1>
+            <p style="text-align: left;">
+                Current Temperature: <span class="temperature">{{.Temperature}}°C</span>
+                <br>
+                Current Humidity: <span class="humidity">{{.Humidity}}%</span>
+            </p>
+        </div>
+        <div id="buttonMenu">
+            <p style="margin-top: 2px; margin:auto;">Thermo Controls</h3>
+            <button class="menuButton" , type="button"
+                onclick="window.location.href='/lock/on/30'">30
+                Minute Heat Lock On</button>
+            <br>
+            <button class="menuButton" , type="button"
+                onclick="window.location.href='/lock/off/30'">30
+                Minute Heat Lock Off</button>
+        </div>
+    </body>
 </html>

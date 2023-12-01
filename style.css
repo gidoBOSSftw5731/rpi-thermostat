@@ -1,0 +1,104 @@
+body {
+    font-family: sans-serif;
+    border: 6px #736ba6 solid;
+    border-radius: 20px;
+    display:flexbox;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 10px;
+    width: 500px;
+    background-color:#424549;
+}
+
+h1 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+p {
+    text-align: center;
+    color: black;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.temperature {
+    color: #ff8c8c;
+}
+
+.humidity {
+    color: #7289da;
+}
+
+#buttonMenu {
+    margin: auto;
+    width: 210px;
+    border: 6px #736ba6 solid;
+    border-radius: 20px;
+    padding-bottom: 5px;
+    text-align: center;
+    font-size: 18px;
+    color: #333;
+}
+
+.menuButton {
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #2196f3;
+    border: 1px solid #0d47a1;
+    border-radius: 6px;
+    margin-top: 2px;
+    margin-left: 4px;
+    margin-right: 4px;
+    margin-bottom: 2px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.menuButton::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300%;
+    height: 300%;
+    background-color: rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+}
+
+.menuButton:hover::before {
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.menuButton:hover {
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+}
+
+.menuButton:active {
+    transform: translateY(2px);
+    box-shadow: none;
+}
+
+.aligned-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; 
+    height: 50px;
+}
+
+#display {
+    margin-left: auto; 
+    margin-right: auto; 
+    margin-top: auto; 
+    margin-bottom: 20px; 
+    width: 400px;
+}
