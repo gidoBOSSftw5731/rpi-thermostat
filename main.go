@@ -34,6 +34,9 @@ var (
 	//relayLockTime is a timestamp of, if the relay is locked, when the lock will be lifted.
 	// locks are manual overrides given by the user.
 	relayLockTime time.Time
+
+	// active is a boolean that is true if the relay is active
+	active bool
 )
 
 type climateData struct {
@@ -78,7 +81,11 @@ func setRelay(state int) {
 	}
 	// set gpio pin to state
 	log.Traceln("Setting relay to", state)
-	relay_line.SetValue(state)
+	active = state == 1
+	err := relay_line.SetValue(state)
+	if err != nil {
+		log.Errorln("Error setting relay: ", err)
+	}
 }
 
 func main() {
@@ -106,6 +113,12 @@ func startWebserver() {
 	http.HandleFunc("/style.css", func(resp http.ResponseWriter, req *http.Request) {
 		http.ServeFile(resp, req, "style.css")
 	})
+	http.HandleFunc("/isactive", func(resp http.ResponseWriter, req *http.Request) {
+		resp.Write([]byte(strconv.FormatBool(active)))
+	})
+	http.HandleFunc("/islocked", func(resp http.ResponseWriter, req *http.Request) {
+		resp.Write([]byte(strconv.FormatBool(time.Now().Before(relayLockTime))))
+	})
 	http.ListenAndServe("127.0.0.1:8080", nil)
 }
 
@@ -128,12 +141,15 @@ func lockHandler(resp http.ResponseWriter, req *http.Request) {
 	// split path into parts
 	URLSplit := strings.Split(req.URL.Path, "/")
 
-	// check if the path has both a state and a time
-	if len(URLSplit) != 4 {
+	switch len(URLSplit) {
+	case 4:
+		locker(resp, req, URLSplit)
+	default:
 		resp.WriteHeader(http.StatusBadRequest)
-		return
 	}
+}
 
+func locker(resp http.ResponseWriter, req *http.Request, URLSplit []string) {
 	var state int
 	// parse the state
 	switch URLSplit[2] {
@@ -162,5 +178,4 @@ func lockHandler(resp http.ResponseWriter, req *http.Request) {
 
 	// redirect to the index page
 	http.Redirect(resp, req, "/", http.StatusTemporaryRedirect)
-
 }
