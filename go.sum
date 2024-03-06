@@ -6,6 +6,8 @@ github.com/d2r2/go-shell v0.0.0-20211022052110-f591c27e3e2e h1:6rbw4kecquuE5mELv
 github.com/d2r2/go-shell v0.0.0-20211022052110-f591c27e3e2e/go.mod h1:yqtlOXB0bWzWgM4wZ9BdZ75OmXSiFYSKrZ3TZlPaePQ=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
+github.com/gidoBOSSftw5731/goweather v0.0.0-20240305235943-a0b1eeae0b8b h1:vOIPOhlmUlEDFH0s/FozYiYxIxbJW6QGnBPnNp+/Jvs=
+github.com/gidoBOSSftw5731/goweather v0.0.0-20240305235943-a0b1eeae0b8b/go.mod h1:YzvwrL8+c/bZQOkO46Os6NVjrgGEcZYRnPo4LnC8IVs=
 github.com/gidoBOSSftw5731/log v0.0.0-20210527210830-1611311b4b64 h1:9vcV5zLtrl6WiCH8c6bvvdy0dsTqq7FGRqXD61K4gG4=
 github.com/gidoBOSSftw5731/log v0.0.0-20210527210830-1611311b4b64/go.mod h1:a8Ke7EvCSaGUHJbc4PB7gaOgeqAsb8TgGX0kOaunaOY=
 github.com/warthog618/gpiod v0.8.2 h1:2HgQ9pNowPp7W77sXhX5ut5Tqq1WoS3t7bXYDxtYvxc=

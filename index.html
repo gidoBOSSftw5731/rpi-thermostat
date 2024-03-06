@@ -5,6 +5,21 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Room Temperature and Humidity</title>
         <link rel="stylesheet" , href="style.css">
+
+        <script>
+            // query lock time from /isLocked and update the locktime span
+            fetch('/isLocked')
+                .then(response => response.json())
+                .then(data => {
+                    document.querySelector('.locktime').textContent = data.lockTime;
+            });
+            // query if the fan is on by quering /isActive and update the systemstatus span
+            fetch('/isActive')
+                .then(response => response.json())
+                .then(data => {
+                    document.querySelector('.systemstatus').textContent = data.systemStatus;
+            });
+        </script>
     </head>
     <body>
         <div id = display>
@@ -13,20 +28,30 @@
                 Current Temperature: <span class="temperature">{{.Temperature}}°C</span>
                 <br>
                 Current Humidity: <span class="humidity">{{.Humidity}}%</span>
+                <br>
+                Is the AC (probably) on?: <span class="humidity">{{.IsAcOn}}%</span>
+                <br>
+                Current Outside Temperature: <span class="temperature">{{.OutsideTemperature}}°C</span>
+                <br>
+                Current Outside Humidity: <span class="humidity">{{.OutsideHumidity}}%</span> 
+                <br>
+                Is the system on? <span class="systemstatus"></span>     
+                <br>
+                How many minutes is the fan locked for? <span class="locktime"></span>           
             </p>
         </div>
         <div id="buttonMenu">
             <p style="margin-top: 2px; margin:auto;">Thermo Controls</h3>
             <button class="menuButton" , type="button"
                 onclick="window.location.href='/lock/on/30'">30
-                Minute Heat Lock On</button>
+                Minute Fan Lock On</button>
             <br>
             <button class="menuButton" , type="button"
                 onclick="window.location.href='/lock/off/30'">30
-                Minute Heat Lock Off</button>
+                Minute Fan Lock Off</button>
             <button class="menuButton" , type="button"
                 onclick="window.location.href='/lock/off/0'">
-                Clear Heat Lock</button>
+                Clear Fan Lock</button>
             <br>
         </div>
     </body>

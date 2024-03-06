@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"html/template"
 	"net/http"
 	"strconv"
@@ -8,6 +9,7 @@ import (
 	"time"
 
 	"github.com/d2r2/go-dht"
+	weather "github.com/gidoBOSSftw5731/goweather"
 	"github.com/gidoBOSSftw5731/log"
 	"github.com/warthog618/gpiod"
 )
@@ -24,6 +26,9 @@ const (
 
 	// histeresis is the range of temperature we allow, so the range is +- histeresis
 	histeresis = 1
+
+	// outside_temp_threshold is the temperature above which we want to turn on the AC
+	outside_temp_threshold = 15.56
 )
 
 var (
@@ -37,11 +42,20 @@ var (
 
 	// active is a boolean that is true if the relay is active
 	active bool
+
+	// current zip code set by flag that defaults to 90210
+	zipCode = flag.String("zip", "90210", "The zip code to get the weather for to determine if heat or AC should be on.")
+
+	// apiKey is the api key for the openweathermap api
+	apiKey = flag.String("api", "", "The api key for the openweathermap api.")
 )
 
 type climateData struct {
-	Temperature float32
-	Humidity    float32
+	Temperature     float32
+	Humidity        float32
+	OutsideTemp     float32
+	OutsideHumidity float32
+	IsACOn          bool
 }
 
 func checkTemp() float32 {
@@ -55,6 +69,15 @@ func checkTempAndHumidity() (float32, float32) {
 	currentClimateData.Temperature = temperature
 	currentClimateData.Humidity = humidity
 
+	// also get the outside temperature
+	w, err := weather.CurrentWeather(*zipCode, *apiKey)
+	if err != nil {
+		log.Errorln("Error getting weather: ", err)
+		return temperature, humidity
+	}
+	currentClimateData.OutsideTemp = float32(w.Main.Temp)
+	currentClimateData.OutsideHumidity = float32(w.Main.Humidity)
+
 	return temperature, humidity
 }
 
@@ -64,14 +87,33 @@ func checker() {
 	for {
 		temperature := checkTemp()
 		switch {
+		case checkOutsideTemp(outside_temp_threshold):
+			// turn on the relay
+			currentClimateData.IsACOn = true
+			setRelay(1)
 		case temperature <= desired_temp-histeresis:
 			// turn on the relay
+			currentClimateData.IsACOn = false
 			setRelay(1)
 		case temperature > desired_temp+histeresis:
 			// turn off the relay
+			currentClimateData.IsACOn = false
 			setRelay(0)
 		}
 	}
+}
+
+// checkOutsideTemp checks the outside temperature and, if it's higher than the threshold set, returns true to turn on the AC
+func checkOutsideTemp(threshold float64) bool {
+	// get the outside temperature
+	w, err := weather.CurrentWeather(*zipCode, *apiKey)
+	if err != nil {
+		log.Errorln("Error getting weather: ", err)
+		return false
+	}
+
+	// if the temperature is higher than the threshold, return true]
+	return w.Main.Temp > threshold
 }
 
 func setRelay(state int) {
@@ -90,6 +132,8 @@ func setRelay(state int) {
 
 func main() {
 	log.SetCallDepth(4)
+
+	flag.Parse()
 
 	var err error
 	relay_line, err = gpiod.RequestLine("gpiochip0", relay_pin, gpiod.AsOutput())
