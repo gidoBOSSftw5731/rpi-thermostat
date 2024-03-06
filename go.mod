@@ -1,6 +1,6 @@
 module github.com/gidoBOSSftw5731/rpi-thermostat
 
-go 1.21.6
+go 1.21
 
 require github.com/gidoBOSSftw5731/log v0.0.0-20210527210830-1611311b4b64
 
