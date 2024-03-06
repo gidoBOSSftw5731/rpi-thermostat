@@ -51,11 +51,11 @@ var (
 )
 
 type climateData struct {
-	Temperature     float32
-	Humidity        float32
-	OutsideTemp     float32
-	OutsideHumidity float32
-	IsACOn          bool
+	Temperature        float32
+	Humidity           float32
+	OutsideTemperature float32
+	OutsideHumidity    float32
+	IsACOn             bool
 }
 
 func checkTemp() float32 {
@@ -75,7 +75,7 @@ func checkTempAndHumidity() (float32, float32) {
 		log.Errorln("Error getting weather: ", err)
 		return temperature, humidity
 	}
-	currentClimateData.OutsideTemp = float32(w.Main.Temp)
+	currentClimateData.OutsideTemperature = float32(w.Main.Temp)
 	currentClimateData.OutsideHumidity = float32(w.Main.Humidity)
 
 	return temperature, humidity

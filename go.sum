@@ -10,7 +10,17 @@ github.com/gidoBOSSftw5731/goweather v0.0.0-20240305235943-a0b1eeae0b8b h1:vOIPO
 github.com/gidoBOSSftw5731/goweather v0.0.0-20240305235943-a0b1eeae0b8b/go.mod h1:YzvwrL8+c/bZQOkO46Os6NVjrgGEcZYRnPo4LnC8IVs=
 github.com/gidoBOSSftw5731/log v0.0.0-20210527210830-1611311b4b64 h1:9vcV5zLtrl6WiCH8c6bvvdy0dsTqq7FGRqXD61K4gG4=
 github.com/gidoBOSSftw5731/log v0.0.0-20210527210830-1611311b4b64/go.mod h1:a8Ke7EvCSaGUHJbc4PB7gaOgeqAsb8TgGX0kOaunaOY=
+github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=
+github.com/pkg/errors v0.9.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
+github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
+github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
+github.com/stretchr/testify v1.8.2 h1:+h33VjcLVPDHtOdpUCuF+7gSuG3yGIftsP1YvFihtJ8=
+github.com/stretchr/testify v1.8.2/go.mod h1:w2LPCIKwWwSfY2zedu0+kehJoqGctiVI29o6fzry7u4=
+github.com/warthog618/go-gpiosim v0.1.0 h1:2rTMTcKUVZxpUuvRKsagnKAbKpd3Bwffp87xywEDVGI=
+github.com/warthog618/go-gpiosim v0.1.0/go.mod h1:Ngx/LYI5toxHr4E+Vm6vTgCnt0of0tktsSuMUEJ2wCI=
 github.com/warthog618/gpiod v0.8.2 h1:2HgQ9pNowPp7W77sXhX5ut5Tqq1WoS3t7bXYDxtYvxc=
 github.com/warthog618/gpiod v0.8.2/go.mod h1:O7BNpHjCn/4YS5yFVmoFZAlY1LuYuQ8vhPf0iy/qdi4=
 golang.org/x/sys v0.10.0 h1:SqMFp9UcQJZa+pmYuAKjd9xq1f0j5rLcDIk0mj4qAsA=
 golang.org/x/sys v0.10.0/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
+gopkg.in/yaml.v3 v3.0.1 h1:fxVm/GzAzEWqLHuvctI91KS9hhNmmWOoWu0XTYJS7CA=
+gopkg.in/yaml.v3 v3.0.1/go.mod h1:K4uyk7z7BCEPqu6E+C64Yfv1cQ7kz7rIZviUmN+EgEM=
