@@ -112,6 +112,8 @@ func checkOutsideTemp(threshold float64) bool {
 		return false
 	}
 
+	log.Tracef("Weather data: %+v\n", w)
+
 	// if the temperature is higher than the threshold, return true]
 	return w.Main.Temp > threshold
 }
