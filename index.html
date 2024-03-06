@@ -8,16 +8,36 @@
 
         <script>
             // query lock time from /isLocked and update the locktime span
-            fetch('/isLocked')
-                .then(response => response.json())
-                .then(data => {
-                    document.querySelector('.locktime').textContent = data.lockTime;
+            fetch('/islocked')
+                .then(response => {
+                    if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.text(); // Get raw text of the response
+                })
+                .then(responseBody => {
+                    const locktimeElement = document.getElementById('locktime');
+                    locktimeElement.textContent = responseBody; 
+                })
+                .catch(error => {
+                    console.error("Error fetching data:", error);
+                    document.getElementById('locktime').textContent = "Error fetching status.";
             });
-            // query if the fan is on by quering /isActive and update the systemstatus span
-            fetch('/isActive')
-                .then(response => response.json())
-                .then(data => {
-                    document.querySelector('.systemstatus').textContent = data.systemStatus;
+
+            fetch('/isactive')
+                .then(response => {
+                    if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.text(); // Get raw text of the response
+                })
+                .then(responseBody => {
+                    const locktimeElement = document.getElementById('systemstatus');
+                    locktimeElement.textContent = responseBody; 
+                })
+                .catch(error => {
+                    console.error("Error fetching data:", error);
+                    document.getElementById('systemstatus').textContent = "Error fetching status.";
             });
         </script>
     </head>
@@ -35,9 +55,9 @@
                 <br>
                 Current Outside Humidity: <span class="humidity">{{.OutsideHumidity}}%</span> 
                 <br>
-                Is the system on? <span class="systemstatus"></span>     
+                Is the system on? <span id="systemstatus"></span>     
                 <br>
-                How many minutes is the fan locked for? <span class="locktime"></span>           
+                How many minutes is the fan locked for? <span id="locktime"></span>           
             </p>
         </div>
         <div id="buttonMenu">
