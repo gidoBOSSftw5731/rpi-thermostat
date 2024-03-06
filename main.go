@@ -126,6 +126,7 @@ func setRelay(state int) {
 	if err != nil {
 		log.Errorln("Error setting relay: ", err)
 	}
+	currentClimateData.lastUpdated = time.Now()
 }
 
 func main() {
