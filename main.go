@@ -56,6 +56,7 @@ type climateData struct {
 	OutsideTemperature float32
 	OutsideHumidity    float32
 	IsACOn             bool
+	lastUpdated        time.Time
 }
 
 func checkTemp() float32 {
@@ -68,6 +69,10 @@ func checkTempAndHumidity() (float32, float32) {
 		dht.ReadDHTxxWithRetry(sensor_type, sensor_pin, false, 50)
 	currentClimateData.Temperature = temperature
 	currentClimateData.Humidity = humidity
+
+	if !currentClimateData.lastUpdated.Add(time.Minute * 15).Before(time.Now()) {
+		return temperature, humidity
+	}
 
 	// also get the outside temperature
 	w, err := weather.CurrentWeather(*zipCode, *apiKey)
@@ -105,17 +110,8 @@ func checker() {
 
 // checkOutsideTemp checks the outside temperature and, if it's higher than the threshold set, returns true to turn on the AC
 func checkOutsideTemp(threshold float64) bool {
-	// get the outside temperature
-	w, err := weather.CurrentWeather(*zipCode, *apiKey)
-	if err != nil {
-		log.Errorln("Error getting weather: ", err)
-		return false
-	}
-
-	log.Tracef("Weather data: %+v\n", w)
-
 	// if the temperature is higher than the threshold, return true]
-	return w.Main.Temp > threshold
+	return float64(currentClimateData.OutsideTemperature) > threshold
 }
 
 func setRelay(state int) {
